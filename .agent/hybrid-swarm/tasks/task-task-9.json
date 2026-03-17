@@ -1,0 +1,36 @@
+{
+  "task_id": "task-9",
+  "title": "SQL lexer and token definitions",
+  "description": "Implement Token struct (kind, span byte-offset range, line, col) and TokenKind enum: all literals (IntegerLiteral/FloatLiteral/StringLiteral/BooleanLiteral/NullLiteral), identifiers (unquoted lowercased, quoted case-preserving), all SQL keywords (SELECT through ROW, 80+ keywords), operators (Plus/Minus/Star/Slash/Percent/Caret/Eq/NotEq/Lt/Gt/LtEq/GtEq/Concat), punctuation (parens, comma, semicolon, dot, ColonColon), Placeholder($N), Eof. Implement lexer: case-insensitive keyword matching, identifier rules [a-zA-Z_][a-zA-Z0-9_]*, single-quoted strings with '' escape, E'...' C-style escapes, numeric literals (int, float, scientific, hex 0x), single-line (--) and nestable block (/* */) comments, whitespace skipping, longest-match operator disambiguation (<> before <, :: before :, || before |), error token collection with source location up to configurable limit (default 50). Include tests for all token types, case insensitivity, string escaping, numeric formats, comment handling, operator disambiguation, error reporting with position, empty input, consecutive strings.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-1"
+  ],
+  "target_files": [
+    "sqld/src/sql/mod.rs",
+    "sqld/src/sql/token.rs",
+    "sqld/src/sql/lexer.rs",
+    "sqld/src/sql/error.rs",
+    "sqld/tests/test_lexer.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All 80 tests pass. The SQL lexer and token definitions are fully implemented across all target files:\n\n- **`sqld/src/sql/token.rs`** - `Span` (byte-offset range), `Token` (kind, span, line, col), `TokenKind` enum (5 literals, 2 identifier types, 89 keywords, 13 operators, 6 punctuation, Placeholder, Eof, Error), and `lookup_keyword` for case-insensitive matching\n- **`sqld/src/sql/lexer.rs`** - `Lexer` struct with full tokenization: whitespace skipping, single-line (`--`) and nestable block (`/* */`) comments, identifier rules `[a-zA-Z_][a-zA-Z0-9_]*` with lowercased keyword matching, single-quoted strings with `''` escape, `E'...'` C-style escapes, numeric literals (int, float, scientific, hex `0x`), longest-match operator disambiguation (`<>` before `<`, `::` before `:`, `||` before `|`), error collection with configurable limit (default 50)\n- **`sqld/src/sql/error.rs`** - `LexerError` with message, offset, line, col and `DEFAULT_MAX_ERRORS = 50`\n- **`sqld/src/sql/mod.rs`** - Module declarations and public re-exports\n- **`sqld/tests/test_lexer.rs`** - 80 tests covering all token types, case insensitivity, string escaping, numeric formats, comment handling, operator disambiguation, error reporting with position, empty input, and consecutive strings\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 1,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T20:08:39.446776+00:00",
+      "duration_s": 600.0045959949493,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

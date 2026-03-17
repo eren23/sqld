@@ -1,0 +1,5 @@
+# Task: Disk manager and page layout
+
+Implement the disk manager for page-level file I/O: allocate/read/write/deallocate 8KB pages at correct file offsets, create data directories on first use, handle concurrent access with file locking. Implement slotted page layout with 24-byte header (page_id, page_type, free_space_offset, tuple_count, flags, lsn, checksum), slot array growing downward, tuple data growing upward. Support page types: HEAP_DATA, BTREE_INTERNAL, BTREE_LEAF, HASH_BUCKET, OVERFLOW, FREE_SPACE_MAP. Implement tuple insert into page (add slot, write data), delete (mark slot free), fetch by slot index, compaction (consolidate free space), and page serialization with CRC16 checksums. Include unit tests for page operations, disk I/O round-trips, allocation/deallocation, and checksum verification.
+
+Target files: sqld/src/storage/mod.rs, sqld/src/storage/disk_manager.rs, sqld/src/storage/page.rs, sqld/tests/test_page.rs, sqld/tests/test_disk_manager.rs

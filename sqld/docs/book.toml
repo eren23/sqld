@@ -1,0 +1,13 @@
+[book]
+title = "sqld Documentation"
+description = "A PostgreSQL-compatible SQL database written from scratch in Rust"
+authors = ["eren23"]
+language = "en"
+src = "src"
+
+[output.html]
+default-theme = "navy"
+preferred-dark-theme = "navy"
+site-url = "/sqld/"
+git-repository-url = "https://github.com/eren23/sqld"
+edit-url-template = "https://github.com/eren23/sqld/edit/main/sqld/docs/{path}"

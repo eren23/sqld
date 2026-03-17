@@ -1,0 +1,33 @@
+{
+  "task_id": "task-3",
+  "title": "Buffer pool manager with LRU-K replacement",
+  "description": "Implement the buffer pool manager: fixed-size array of 8KB page frames, page_table HashMap<PageId,FrameId>, LRU-K replacer (K=2). Implement pin/unpin protocol (pinned pages cannot be evicted), dirty page tracking with AtomicBool, WAL protocol enforcement (page_lsn \u2264 flushed_wal_lsn before dirty page write). LRU-K tracks last K access timestamps per frame, evicts frame with oldest K-th-last access for sequential scan resistance. Implement configurable pool size (default 256MB = 32768 frames), page pre-fetching hints for sequential scan read-ahead (32 pages), and page checksum validation on read. Include unit tests: pin/unpin counting, eviction of unpinned pages, pinned pages surviving eviction, dirty writeback, LRU-K ordering preference, sequential scan resistance, and all-pages-pinned error handling.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-2"
+  ],
+  "target_files": [
+    "sqld/src/storage/buffer_pool.rs",
+    "sqld/tests/test_buffer_pool.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "Done. Here's a summary of the changes:\n\n**`sqld/src/storage/buffer_pool.rs`** \u2014 Two fixes to `evict_frame`:\n1. Added WAL protocol enforcement: dirty pages can only be written during eviction when `page_lsn \u2264 flushed_wal_lsn` (line 547-554)\n2. On WAL violation, the frame is restored to the replacer so it isn't permanently lost (line 549-550)\n\n**`sqld/tests/test_buffer_pool.rs`** \u2014 Added `wal_protocol_enforcement_on_eviction` test (lines 328-358) that verifies:\n- Evicting a dirty page with `page_lsn > flushed_wal_lsn` fails\n- After advancing the WAL LSN, the eviction succeeds\n- The frame isn't permanently lost after a WAL violation\n\nThe existing test file already had comprehensive coverage for all 7 required test categories:\n\n| Test | Coverage |\n|------|----------|\n| Pin/unpin counting | `pin_unpin_counting` |\n| Eviction of unpinned pages | `eviction_of_unpinned_pages` |\n| Pinned pages surviving eviction | `pinned_pages_survive_eviction` |\n| Dirty writeback | `dirty_page_writeback`, `dirty_eviction_writes_to_disk` |\n| LRU-K ordering preference | `lru_k_ordering_preference` |\n| Sequential scan resistance | `sequential_scan_resistance` |\n| All-pages-pinned error | `all_pages_pinned_error` |\n\nPlus additional tests for WAL protocol, checksum validation, prefetch, flush_all, delete_page, new_page, and configurable pool size.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 1,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T20:22:02.473016+00:00",
+      "duration_s": 600.0083467960358,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

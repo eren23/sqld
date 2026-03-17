@@ -1,0 +1,36 @@
+{
+  "task_id": "task-2",
+  "title": "Disk manager and page layout",
+  "description": "Implement the disk manager for page-level file I/O: allocate/read/write/deallocate 8KB pages at correct file offsets, create data directories on first use, handle concurrent access with file locking. Implement slotted page layout with 24-byte header (page_id, page_type, free_space_offset, tuple_count, flags, lsn, checksum), slot array growing downward, tuple data growing upward. Support page types: HEAP_DATA, BTREE_INTERNAL, BTREE_LEAF, HASH_BUCKET, OVERFLOW, FREE_SPACE_MAP. Implement tuple insert into page (add slot, write data), delete (mark slot free), fetch by slot index, compaction (consolidate free space), and page serialization with CRC16 checksums. Include unit tests for page operations, disk I/O round-trips, allocation/deallocation, and checksum verification.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-1"
+  ],
+  "target_files": [
+    "sqld/src/storage/mod.rs",
+    "sqld/src/storage/disk_manager.rs",
+    "sqld/src/storage/page.rs",
+    "sqld/tests/test_page.rs",
+    "sqld/tests/test_disk_manager.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All implementations are already complete and all tests pass:\n\n- **11/11** storage unit tests (in `page.rs`)\n- **27/27** page integration tests (`test_page.rs`)\n- **14/14** disk manager integration tests (`test_disk_manager.rs`)\n\nHere's what's implemented across the target files:\n\n**`sqld/src/storage/disk_manager.rs`** \u2014 Page-level file I/O with:\n- `Mutex<File>` for thread-safe access, `AtomicU32` for page ID allocation\n- `allocate_page()` with free-list reuse, `deallocate_page()` with on-disk zeroing\n- `read_page()`/`write_page()` at correct 8KB offsets (`page_id * PAGE_SIZE`)\n- Data directory + lock file creation on first use\n\n**`sqld/src/storage/page.rs`** \u2014 Slotted page layout with:\n- 24-byte header (page_id, page_type, free_space_offset, tuple_count, flags, lsn, checksum)\n- 6 page types: HeapData, BtreeInternal, BtreeLeaf, HashBucket, Overflow, FreeSpaceMap\n- Slot array growing downward from header, tuple data growing upward from page end\n- `insert_tuple()`, `delete_tuple()` (mark free), `fetch_tuple()`, `compact()`\n- CRC-16/CCITT checksum with `verify_checksum()`\n\n**`sqld/src/storage/mod.rs`** \u2014 Re-exports all public types\n\n**`sqld/tests/test_page.rs`** \u2014 27 tests covering construction, insert/fetch, delete, slot reuse, compaction, serialization round-trips, checksums, edge cases\n\n**`sqld/tests/test_disk_manager.rs`** \u2014 14 tests covering directory creation, allocation, read/write round-trips, deallocation/free-list, error cases, persistence across reopen, file growth, concurrent access\n\nEverything is complete and passing.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 1,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T20:08:39.446241+00:00",
+      "duration_s": 600.0047650337219,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

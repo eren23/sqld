@@ -1,0 +1,4 @@
+{"timestamp": 1773693722.537062, "agent_id": "agent-task-4", "task_id": "task-4", "entry_type": "error", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 600.0111660957336, "files_modified": [], "error": "Task timed out after 600.0s"}}
+{"timestamp": 1773694322.574395, "agent_id": "agent-task-4", "task_id": "task-4", "entry_type": "error", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 600.0075540542603, "files_modified": [], "error": "Task timed out after 600.0s"}}
+{"timestamp": 1773694922.61257, "agent_id": "agent-task-4", "task_id": "task-4", "entry_type": "error", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 600.0054960250854, "files_modified": [], "error": "Task timed out after 600.0s"}}
+{"timestamp": 1773695145.913753, "agent_id": "agent-task-4", "task_id": "task-4", "entry_type": "cost_delta", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 223.28544116020203, "files_modified": [], "error": ""}}

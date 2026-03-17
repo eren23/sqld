@@ -1,0 +1,33 @@
+{
+  "task_id": "task-6",
+  "title": "Extendible hash index",
+  "description": "Implement extendible hash index: directory of 2^d pointers (d=global depth), buckets as pages of key-TID pairs. On overflow: increment local depth, split bucket, redistribute entries, double directory if local depth exceeds global depth. Support exact-match lookup O(1), reject range scan requests. Handle duplicate keys (store all TIDs). Implement delete (remove key-TID pair). Use page-level latches for concurrent access. Include tests: insert+lookup, 10k distinct keys all retrievable, bucket split with correct redistribution and directory growth, duplicate key handling, delete, range scan rejection, 8-thread concurrent insert+lookup correctness.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-3"
+  ],
+  "target_files": [
+    "sqld/src/storage/hash_index.rs",
+    "sqld/tests/test_hash_index.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "The extendible hash index is already fully implemented and all 7 tests pass:\n\n1. **`insert_and_lookup`** - Basic insert + lookup\n2. **`ten_thousand_distinct_keys`** - 10k distinct keys all retrievable\n3. **`bucket_split_and_directory_growth`** - Bucket split with correct redistribution and directory growth\n4. **`duplicate_key_handling`** - Duplicate key handling (stores all TIDs)\n5. **`delete`** - Delete key-TID pairs\n6. **`range_scan_rejected`** - Range scan rejection\n7. **`concurrent_8_thread_insert_lookup`** - 8-thread concurrent insert + lookup correctness\n\nThe implementation in `sqld/src/storage/hash_index.rs` (338 lines) covers:\n- **Directory**: 2^d pointers with global depth tracking\n- **Buckets**: Pages storing key-TID pairs with local depth in page flags\n- **Overflow handling**: Increment local depth, split bucket, redistribute entries by split bit, double directory when local depth exceeds global depth\n- **Exact-match lookup**: O(1) via hash \u2192 bucket index \u2192 scan bucket\n- **Range scan rejection**: Returns error\n- **Duplicate keys**: All TIDs stored and returned\n- **Delete**: Removes specific key-TID pair\n- **Concurrency**: `RwLock<IndexState>` for directory, `Arc<RwLock<Page>>` for page-level latches; fast path (read-lock directory) and slow path (write-lock directory for splits)\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 1,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T20:42:02.549225+00:00",
+      "duration_s": 600.0100939273834,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

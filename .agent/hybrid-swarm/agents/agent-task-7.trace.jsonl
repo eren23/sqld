@@ -1,0 +1,3 @@
+{"timestamp": 1773695783.636106, "agent_id": "agent-task-7", "task_id": "task-7", "entry_type": "error", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 600.0138220787048, "files_modified": [], "error": "Task timed out after 600.0s"}}
+{"timestamp": 1773696383.671943, "agent_id": "agent-task-7", "task_id": "task-7", "entry_type": "error", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 600.009512424469, "files_modified": [], "error": "Task timed out after 600.0s"}}
+{"timestamp": 1773696595.5095942, "agent_id": "agent-task-7", "task_id": "task-7", "entry_type": "cost_delta", "data": {"cost_usd": 0.0, "tokens_used": 0, "duration_s": 211.81148219108582, "files_modified": [], "error": ""}}

@@ -1,0 +1,5 @@
+# Task: Buffer pool manager with LRU-K replacement
+
+Implement the buffer pool manager: fixed-size array of 8KB page frames, page_table HashMap<PageId,FrameId>, LRU-K replacer (K=2). Implement pin/unpin protocol (pinned pages cannot be evicted), dirty page tracking with AtomicBool, WAL protocol enforcement (page_lsn ≤ flushed_wal_lsn before dirty page write). LRU-K tracks last K access timestamps per frame, evicts frame with oldest K-th-last access for sequential scan resistance. Implement configurable pool size (default 256MB = 32768 frames), page pre-fetching hints for sequential scan read-ahead (32 pages), and page checksum validation on read. Include unit tests: pin/unpin counting, eviction of unpinned pages, pinned pages surviving eviction, dirty writeback, LRU-K ordering preference, sequential scan resistance, and all-pages-pinned error handling.
+
+Target files: sqld/src/storage/buffer_pool.rs, sqld/tests/test_buffer_pool.rs

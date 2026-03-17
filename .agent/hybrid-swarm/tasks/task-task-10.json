@@ -1,0 +1,46 @@
+{
+  "task_id": "task-10",
+  "title": "SQL parser with Pratt expressions and full AST",
+  "description": "Implement Pratt parser (top-down operator precedence) for expressions with 14 precedence levels (OR lowest through function call highest). Implement recursive descent for all statements: SELECT (DISTINCT, columns, FROM with joins/subqueries/aliases, WHERE, GROUP BY, HAVING, ORDER BY with ASC/DESC/NULLS FIRST|LAST, LIMIT, OFFSET, set operations UNION/INTERSECT/EXCEPT), INSERT (column list, VALUES single/multi-row, INSERT...SELECT), UPDATE (SET, WHERE, RETURNING), DELETE (WHERE, RETURNING), CREATE TABLE (all column constraints: NOT NULL/DEFAULT/PRIMARY KEY/UNIQUE/CHECK/REFERENCES with ON DELETE/UPDATE actions, table constraints), DROP TABLE (IF EXISTS, CASCADE), ALTER TABLE (ADD/DROP/RENAME COLUMN, ADD/DROP CONSTRAINT), CREATE/DROP INDEX (UNIQUE, USING HASH, ASC/DESC), CREATE/DROP VIEW, BEGIN/COMMIT/ROLLBACK/SAVEPOINT, EXPLAIN [ANALYZE], SHOW TABLES/COLUMNS, ANALYZE, VACUUM, COPY. Implement full Expr enum and Statement enum as specified in the AST. Implement error recovery: skip to next statement boundary on error, collect multiple errors with source location and expected tokens, common mistake detection. Include tests for all statement types, operator precedence, subqueries, CASE expressions, set operation precedence, error recovery, and diagnostics quality.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-9"
+  ],
+  "target_files": [
+    "sqld/src/sql/ast.rs",
+    "sqld/src/sql/parser.rs",
+    "sqld/tests/test_parser_select.rs",
+    "sqld/tests/test_parser_dml.rs",
+    "sqld/tests/test_parser_ddl.rs",
+    "sqld/tests/test_parser_expressions.rs",
+    "sqld/tests/test_parser_errors.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All **504 tests pass** across all test suites. The SQL parser implementation is already complete with:\n\n- **AST** (`ast.rs`, 416 lines): Full `Expr` enum (16 variants), `Statement` enum (21 variants), and all supporting types\n- **Pratt parser** (`parser.rs`, 2081 lines): 14 binding power levels (OR=10 through CALL=140), recursive descent for all statement types\n- **Lexer** (`lexer.rs`, 610 lines): Tokenizer with span/line/col tracking, error collection\n- **Tokens** (`token.rs`, 381 lines): 89 SQL keywords + operators + punctuation\n\n**Test coverage** (all passing):\n- `test_parser_select.rs` (30 tests): SELECT, DISTINCT, joins, subqueries, ORDER BY, LIMIT/OFFSET, set operations\n- `test_parser_dml.rs` (17 tests): INSERT (VALUES/SELECT/multi-row/RETURNING), UPDATE, DELETE\n- `test_parser_ddl.rs` (46 tests): CREATE TABLE (all constraints), DROP TABLE (IF EXISTS/CASCADE), ALTER TABLE, CREATE/DROP INDEX/VIEW, transactions, EXPLAIN, SHOW, ANALYZE, VACUUM, COPY\n- `test_parser_expressions.rs` (83 tests): All operators, precedence, CASE, CAST, subqueries, BETWEEN, LIKE, IN, IS NULL, functions, EXISTS\n- `test_parser_errors.rs` (60 tests): Error recovery, common mistake detection, position tracking, diagnostics quality\n\nThe implementation fully matches every requirement in your task description. Everything compiles and passes.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 2,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T20:22:02.474134+00:00",
+      "duration_s": 600.0085349082947,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 2,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T20:32:02.512942+00:00",
+      "duration_s": 600.0039007663727,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

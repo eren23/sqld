@@ -1,0 +1,21 @@
+pub mod distinct;
+pub mod executor;
+pub mod expr_eval;
+pub mod filter;
+pub mod hash_aggregate;
+pub mod hash_join;
+pub mod index_scan;
+pub mod limit;
+pub mod modify;
+pub mod nested_loop_join;
+pub mod project;
+pub mod scalar_functions;
+pub mod seq_scan;
+pub mod set_ops;
+pub mod sort;
+pub mod sort_aggregate;
+pub mod sort_merge_join;
+pub mod values;
+
+pub use executor::{CatalogProvider, Executor, ExecutorContext};
+pub use expr_eval::{compile_expr, evaluate_expr, ExprOp};

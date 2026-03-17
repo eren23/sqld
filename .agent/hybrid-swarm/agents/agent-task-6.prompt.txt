@@ -1,0 +1,5 @@
+# Task: Extendible hash index
+
+Implement extendible hash index: directory of 2^d pointers (d=global depth), buckets as pages of key-TID pairs. On overflow: increment local depth, split bucket, redistribute entries, double directory if local depth exceeds global depth. Support exact-match lookup O(1), reject range scan requests. Handle duplicate keys (store all TIDs). Implement delete (remove key-TID pair). Use page-level latches for concurrent access. Include tests: insert+lookup, 10k distinct keys all retrievable, bucket split with correct redistribution and directory growth, duplicate key handling, delete, range scan rejection, 8-thread concurrent insert+lookup correctness.
+
+Target files: sqld/src/storage/hash_index.rs, sqld/tests/test_hash_index.rs

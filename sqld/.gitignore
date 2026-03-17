@@ -1,0 +1,8 @@
+/target/
+/data/
+docs/book/
+docs/src/demo.gif
+
+# attocode
+.attocode/cache
+.attocode/vectors

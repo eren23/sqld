@@ -1,0 +1,52 @@
+{
+  "task_id": "task-7",
+  "title": "Write-ahead log, checkpointing, and ARIES recovery",
+  "description": "Implement WAL record types: Begin/Commit/Abort, InsertTuple/DeleteTuple/UpdateTuple (physiological with full undo data), IndexInsert/IndexDelete, PageAlloc/PageFree, CheckpointBegin/CheckpointEnd, CLR (compensation log records). Each WalEntry has: lsn (byte offset), prev_lsn (per-txn undo chain), record, crc32. Implement WAL manager: 64KB in-memory buffer, flush on commit/buffer-full/10ms timeout, group commit (multiple txns share single fsync), monotonic LSN assignment. Implement checkpointing: write CheckpointBegin with active txns, flush all dirty pages, write CheckpointEnd, truncate WAL before checkpoint LSN. Implement ARIES 3-phase recovery: Analysis (scan from last checkpoint, rebuild dirty page table + active txn table), Redo (forward scan, re-apply if page LSN < record LSN, idempotent), Undo (walk undo chains for uncommitted txns, write CLRs, CLRs never undone). Include tests: record serialization round-trip, CRC integrity, LSN monotonicity, flush correctness, group commit, redo/undo recovery scenarios, checkpoint recovery, crash simulation at various points.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-4"
+  ],
+  "target_files": [
+    "sqld/src/wal/mod.rs",
+    "sqld/src/wal/wal_record.rs",
+    "sqld/src/wal/wal_manager.rs",
+    "sqld/src/wal/recovery.rs",
+    "sqld/src/wal/checkpoint.rs",
+    "sqld/tests/test_wal_write.rs",
+    "sqld/tests/test_wal_flush.rs",
+    "sqld/tests/test_wal_protocol.rs",
+    "sqld/tests/test_recovery_redo.rs",
+    "sqld/tests/test_recovery_undo.rs",
+    "sqld/tests/test_recovery_checkpoint.rs",
+    "sqld/tests/test_recovery_nested.rs",
+    "sqld/tests/test_crash_simulation.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All **57 tests pass** across all 8 test files. The WAL system is fully implemented and working:\n\n**Source files** (all exist and compile):\n- `sqld/src/wal/mod.rs` \u2014 module exports\n- `sqld/src/wal/wal_record.rs` \u2014 13 WAL record types with serialization/deserialization, WalEntry with LSN/prev_lsn/CRC32\n- `sqld/src/wal/wal_manager.rs` \u2014 64KB buffer, flush on commit/buffer-full/10ms timeout, group commit, monotonic LSN, truncation\n- `sqld/src/wal/recovery.rs` \u2014 ARIES 3-phase recovery (Analysis/Redo/Undo), CLR generation, MemoryPageStore for testing\n- `sqld/src/wal/checkpoint.rs` \u2014 fuzzy checkpointing with CheckpointBegin/End, dirty page flushing, WAL truncation\n\n**Test files** (57 tests, all passing):\n- `test_wal_write.rs` \u2014 15 tests: record serialization round-trips, CRC integrity, LSN monotonicity, txn_id/affected_page correctness\n- `test_wal_flush.rs` \u2014 7 tests: flush semantics, commit triggers flush, group commit, buffer-full auto-flush, WAL reopen\n- `test_wal_protocol.rs` \u2014 7 tests: prev_lsn chains, interleaved txn chains, active txn tracking, parse_entries round-trip, torn write tolerance\n- `test_recovery_redo.rs` \u2014 5 tests: basic redo, idempotency, multiple pages, non-dirty page skipping, update redo\n- `test_recovery_undo.rs` \u2014 6 tests: uncommitted insert/delete/update undo, mixed committed/uncommitted, CLR generation, abort records\n- `test_recovery_checkpoint.rs` \u2014 6 tests: checkpoint begin/end records, checkpoint LSN persistence, truncation, recovery after checkpoint, active txn capture, analysis starting point\n- `test_recovery_nested.rs` \u2014 5 tests: multiple concurrent uncommitted txns, undo ordering, index operations, interleaved ops, already-aborted handling\n- `test_crash_simulation.rs` \u2014 6 tests: crash before/after commit flush, torn write recovery, crash mid-checkpoint, double recovery idempotency, mixed committed/uncommitted crash\n\nEverything requested in the task specification is implemented and verified.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 2,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T21:16:23.637371+00:00",
+      "duration_s": 600.0138220787048,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 2,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T21:26:23.672596+00:00",
+      "duration_s": 600.009512424469,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

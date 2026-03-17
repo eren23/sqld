@@ -1,0 +1,100 @@
+{
+  "task_id": "task-15",
+  "title": "PostgreSQL wire protocol, server, and full integration",
+  "description": "Implement PostgreSQL v3 wire protocol message codec: all message types for simple query (Query\u2192RowDescription+DataRow[]+CommandComplete+ReadyForQuery) and extended query (Parse/Bind/Describe/Execute/Sync with prepared statement support using $N placeholders). Implement ErrorResponse with severity, SQLSTATE code, message, detail, position. Implement COPY protocol (CopyInResponse/CopyData/CopyDone for CSV bulk import/export with configurable delimiter and HEADER option). Implement transaction state indicator in ReadyForQuery (I/T/E). Implement type serialization for all data types in text and binary format. Implement TCP server: listener on configurable port (default 5433), connection dispatch (one thread per connection or async with tokio), connection limit (default 100), session state (current transaction, prepared statements). Implement connection state machine handling startup (StartupMessage\u2192AuthenticationOk\u2192ParameterStatus[]\u2192ReadyForQuery) and terminate. Implement main.rs: parse config, bootstrap catalog, start WAL recovery, launch TCP listener. Wire together all layers: protocol\u2192parser\u2192binder\u2192planner\u2192optimizer\u2192executor\u2192storage+txn+wal. Create test helpers (common/mod.rs, test_db.rs, assertions.rs). Include protocol tests, SQL end-to-end tests, concurrent transaction tests, constraint enforcement tests, bulk load tests, TPC-C subset, edge case tests, and SQL test files. Create README.md and sqld_config.toml.",
+  "status": "failed",
+  "task_kind": "integrate",
+  "role_hint": "impl",
+  "deps": [
+    "task-14"
+  ],
+  "target_files": [
+    "sqld/src/main.rs",
+    "sqld/src/protocol/mod.rs",
+    "sqld/src/protocol/server.rs",
+    "sqld/src/protocol/connection.rs",
+    "sqld/src/protocol/messages.rs",
+    "sqld/src/protocol/simple_query.rs",
+    "sqld/src/protocol/extended_query.rs",
+    "sqld/src/protocol/copy.rs",
+    "sqld/sqld_config.toml",
+    "sqld/README.md",
+    "sqld/tests/common/mod.rs",
+    "sqld/tests/common/test_db.rs",
+    "sqld/tests/common/assertions.rs",
+    "sqld/tests/test_protocol_simple.rs",
+    "sqld/tests/test_protocol_extended.rs",
+    "sqld/tests/test_protocol_errors.rs",
+    "sqld/tests/test_protocol_copy.rs",
+    "sqld/tests/test_protocol_types.rs",
+    "sqld/tests/test_sql_e2e.rs",
+    "sqld/tests/test_concurrent_txns.rs",
+    "sqld/tests/test_constraint_enforcement.rs",
+    "sqld/tests/test_views.rs",
+    "sqld/tests/test_bulk_load.rs",
+    "sqld/tests/test_tpcc_subset.rs",
+    "sqld/tests/test_edge_cases.rs",
+    "sqld/sql_tests/basic_select.sql",
+    "sqld/sql_tests/joins.sql",
+    "sqld/sql_tests/aggregates.sql",
+    "sqld/sql_tests/subqueries.sql",
+    "sqld/sql_tests/set_operations.sql",
+    "sqld/sql_tests/dml.sql",
+    "sqld/sql_tests/ddl.sql",
+    "sqld/sql_tests/types_and_coercion.sql",
+    "sqld/sql_tests/null_handling.sql",
+    "sqld/sql_tests/constraints.sql",
+    "sqld/sql_tests/transactions.sql",
+    "sqld/sql_tests/edge_cases.sql"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 5,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T22:52:21.432241+00:00",
+      "duration_s": 600.0138528347015,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 2,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T23:02:21.470056+00:00",
+      "duration_s": 600.0233731269836,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 3,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T23:12:21.518951+00:00",
+      "duration_s": 600.0183119773865,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 4,
+      "error": "claude exited with code 143",
+      "timestamp": "2026-03-16T23:17:09.516875+00:00",
+      "duration_s": 287.97939896583557,
+      "tokens_used": 0,
+      "failure_cause": "agent_error"
+    },
+    {
+      "attempt": 5,
+      "error": "claude exited with code 143",
+      "timestamp": "2026-03-16T23:19:00.634613+00:00",
+      "duration_s": 111.09836506843567,
+      "tokens_used": 0,
+      "failure_cause": "agent_error"
+    }
+  ],
+  "has_diff": false
+}

@@ -1,0 +1,44 @@
+{
+  "task_id": "task-1",
+  "title": "Project scaffolding, type system, config, and error hierarchy",
+  "description": "Initialize the Rust project with Cargo.toml (edition 2021, no external DB dependencies). Create lib.rs with all module declarations. Implement the types module: Datum enum (INTEGER/BIGINT/FLOAT/BOOLEAN/VARCHAR/TEXT/TIMESTAMP/DATE/DECIMAL/BLOB/NULL) with comparison, hashing, arithmetic, serialization, and coercion rules (INTEGER\u2192BIGINT\u2192DECIMAL\u2192FLOAT, VARCHAR\u2192TEXT, DATE\u2192TIMESTAMP). Implement DataType enum with coercion lattice. Implement Schema (ordered column definitions, lookup by name/ordinal, merge for joins). Implement Tuple (row representation with null bitmap, fixed/variable-length fields, serialization/deserialization, MVCC header with xmin/xmax/cid). Implement config.rs to parse sqld_config.toml with all sections (server, storage, buffer_pool, wal, optimizer, transactions, vacuum, logging) with defaults. Implement utils/error.rs with a unified error hierarchy. Implement utils/pool.rs for reusable allocations and utils/metrics.rs for performance counters. Include unit tests for Datum comparison/coercion/hashing, Tuple round-trip serialization, Schema operations, and config parsing.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [],
+  "target_files": [
+    "sqld/Cargo.toml",
+    "sqld/src/lib.rs",
+    "sqld/src/config.rs",
+    "sqld/src/types/mod.rs",
+    "sqld/src/types/datum.rs",
+    "sqld/src/types/data_type.rs",
+    "sqld/src/types/schema.rs",
+    "sqld/src/types/tuple.rs",
+    "sqld/src/utils/mod.rs",
+    "sqld/src/utils/error.rs",
+    "sqld/src/utils/pool.rs",
+    "sqld/src/utils/metrics.rs",
+    "sqld/tests/test_datum.rs",
+    "sqld/tests/test_tuple.rs",
+    "sqld/tests/test_schema.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All **142 tests pass** (50 unit + 43 datum integration + 25 schema integration + 24 tuple integration).\n\nHere's what was already in place and what I added:\n\n**Already implemented** (all source files were complete):\n- `sqld/Cargo.toml` \u2014 edition 2021, serde + toml deps only\n- `sqld/src/lib.rs` \u2014 module declarations\n- `sqld/src/config.rs` \u2014 full config parsing with all 8 sections + defaults + inline tests\n- `sqld/src/types/datum.rs` \u2014 Datum enum with all 11 variants, comparison, hashing, arithmetic, serialization, coercion\n- `sqld/src/types/data_type.rs` \u2014 DataType enum with coercion lattice\n- `sqld/src/types/schema.rs` \u2014 Schema with lookup by name/ordinal, merge, project\n- `sqld/src/types/tuple.rs` \u2014 Tuple with null bitmap, MVCC header, serialization\n- `sqld/src/utils/error.rs` \u2014 unified error hierarchy (Type, Config, Storage, Wal, Transaction, Sql, Io, Serialization, Internal)\n- `sqld/src/utils/pool.rs` \u2014 reusable allocation pool\n- `sqld/src/utils/metrics.rs` \u2014 atomic performance counters\n\n**Created** (3 integration test files):\n- `sqld/tests/test_datum.rs` \u2014 43 tests covering equality, hashing, SQL comparison with coercion, coercion rules, arithmetic (cross-type, null propagation, overflow, division-by-zero), serialization round-trips, PartialOrd, Display, introspection\n- `sqld/tests/test_tuple.rs` \u2014 24 tests covering MVCC header lifecycle/serialization, tuple round-trips (all types, empty, all-nulls, large varchar/blob), null bitmap edge cases (8/10/16 columns), accessor methods, error cases\n- `sqld/tests/test_schema.rs` \u2014 25 tests covering construction, lookup by name/ordinal, add_column, merge (no conflicts, single/multiple conflicts, with empty, column order), project (subset, single, all, empty, out-of-bounds), equality/inequality\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 1,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T19:53:37.030310+00:00",
+      "duration_s": 600.0125529766083,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

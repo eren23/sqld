@@ -1,0 +1,81 @@
+{
+  "task_id": "task-14",
+  "title": "Volcano-model executor with all physical operators",
+  "description": "Implement Executor trait: init/next/close/schema methods (pull-based Volcano model). Implement all physical operators: SeqScan (heap iteration with MVCC visibility, pushed-down filter), IndexScan (B+ tree walk, fetch heap tuples by TID, index-only scan), Filter (predicate evaluation), Project (expression projection), HashJoin (build/probe phases for INNER/LEFT/RIGHT/FULL/SEMI/ANTI, disk spill on work_mem overflow), SortMergeJoin (sorted merge), NestedLoopJoin (parameterized inner for index NL), Sort (in-memory quicksort, external merge sort with disk spill, multi-key ASC/DESC/NULLS FIRST|LAST), HashAggregate (hash table by GROUP BY, accumulators for COUNT/SUM/AVG/MIN/MAX/STRING_AGG/ARRAY_AGG/BOOL_AND/BOOL_OR with DISTINCT support), SortAggregate, Limit+Offset, Distinct (hash/sort), Union/Intersect/Except (ALL variants), Values (literal rows), Modify (INSERT/UPDATE/DELETE with index maintenance, constraint checking, WAL writes, RETURNING). Implement expression evaluator: compile to stack-based bytecode (ExprOp enum), evaluate per tuple. Implement all scalar functions: string (LENGTH/UPPER/LOWER/TRIM/SUBSTRING/POSITION/REPLACE/CONCAT/LEFT/RIGHT/REVERSE/LPAD/RPAD/REPEAT/SPLIT_PART), math (ABS/CEIL/FLOOR/ROUND/TRUNC/SQRT/POWER/MOD/LN/LOG/EXP/SIGN/RANDOM), date/time (NOW/EXTRACT/DATE_TRUNC/AGE/interval arithmetic/TO_CHAR), type (CAST/TYPEOF), null (COALESCE/NULLIF). Include comprehensive tests for every operator and function.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-13",
+    "task-5",
+    "task-6",
+    "task-8"
+  ],
+  "target_files": [
+    "sqld/src/executor/mod.rs",
+    "sqld/src/executor/executor.rs",
+    "sqld/src/executor/seq_scan.rs",
+    "sqld/src/executor/index_scan.rs",
+    "sqld/src/executor/filter.rs",
+    "sqld/src/executor/project.rs",
+    "sqld/src/executor/hash_join.rs",
+    "sqld/src/executor/sort_merge_join.rs",
+    "sqld/src/executor/nested_loop_join.rs",
+    "sqld/src/executor/sort.rs",
+    "sqld/src/executor/hash_aggregate.rs",
+    "sqld/src/executor/sort_aggregate.rs",
+    "sqld/src/executor/limit.rs",
+    "sqld/src/executor/distinct.rs",
+    "sqld/src/executor/set_ops.rs",
+    "sqld/src/executor/values.rs",
+    "sqld/src/executor/modify.rs",
+    "sqld/src/executor/expr_eval.rs",
+    "sqld/src/executor/scalar_functions.rs",
+    "sqld/tests/test_seq_scan.rs",
+    "sqld/tests/test_index_scan.rs",
+    "sqld/tests/test_hash_join.rs",
+    "sqld/tests/test_sort_merge_join.rs",
+    "sqld/tests/test_nested_loop_join.rs",
+    "sqld/tests/test_sort.rs",
+    "sqld/tests/test_aggregate.rs",
+    "sqld/tests/test_limit.rs",
+    "sqld/tests/test_set_ops.rs",
+    "sqld/tests/test_modify.rs",
+    "sqld/tests/test_expr_eval.rs",
+    "sqld/tests/test_scalar_functions.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All **1,196 tests pass** with 0 failures across 60 test suites. The project builds successfully (only warnings, no errors).\n\nThe entire Volcano-model executor with all physical operators is **already fully implemented**:\n\n**Executor trait & infrastructure** (`executor.rs`): `init/next/close/schema` pull-based model, `CatalogProvider` trait, `ExecutorContext`, `build_executor` tree builder\n\n**Physical operators:**\n- `SeqScanExecutor` - heap scan with MVCC visibility, pushed-down filter\n- `IndexScanExecutor` - B+ tree walk with residual predicate\n- `FilterExecutor` - predicate evaluation\n- `ProjectExecutor` - expression projection\n- `HashJoinExecutor` - build/probe for INNER/LEFT/RIGHT/FULL/CROSS/SEMI/ANTI with disk spill\n- `SortMergeJoinExecutor` - sorted merge join\n- `NestedLoopJoinExecutor` - parameterized inner for all join types\n- `SortExecutor` - in-memory quicksort + external merge sort with disk spill\n- `HashAggregateExecutor` - hash table with COUNT/SUM/AVG/MIN/MAX/STRING_AGG/ARRAY_AGG/BOOL_AND/BOOL_OR + DISTINCT\n- `SortAggregateExecutor` - stream aggregation on sorted input\n- `LimitExecutor` - LIMIT + OFFSET\n- `HashDistinctExecutor` / `SortDistinctExecutor` - duplicate elimination\n- `UnionExecutor` / `IntersectExecutor` / `ExceptExecutor` - ALL variants\n- `ValuesExecutor` - literal rows\n- `ModifyExecutor` - INSERT/UPDATE/DELETE with RETURNING\n\n**Expression evaluator** (`expr_eval.rs`): Full `ExprOp` bytecode enum, `compile_expr`, `evaluate_expr` with all operations\n\n**Scalar functions** (`scalar_functions.rs`): All string (LENGTH/UPPER/LOWER/TRIM/SUBSTRING/POSITION/REPLACE/CONCAT/LEFT/RIGHT/REVERSE/LPAD/RPAD/REPEAT/SPLIT_PART), math (ABS/CEIL/FLOOR/ROUND/TRUNC/SQRT/POWER/MOD/LN/LOG/EXP/SIGN/RANDOM), date/time (NOW/EXTRACT/DATE_TRUNC/AGE/TO_CHAR), type (CAST/TYPEOF), null (COALESCE/NULLIF)\n\n**Comprehensive tests** in all 12 test files covering every operator and function.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 3,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T22:14:35.043210+00:00",
+      "duration_s": 600.018317937851,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 2,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T22:24:35.092614+00:00",
+      "duration_s": 600.019092798233,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 3,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T22:34:35.133865+00:00",
+      "duration_s": 600.0284841060638,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

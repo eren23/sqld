@@ -1,0 +1,26 @@
+{
+  "task_id": "task-12",
+  "title": "Semantic analyzer (binder) with name resolution and type checking",
+  "description": "Implement the binder that transforms raw AST into bound/resolved AST. Phase 1 - Name resolution: resolve table names to catalog entries, column names to (table_id, column_ordinal), disambiguate unqualified columns (error if ambiguous). Phase 2 - Type checking: infer expression types bottom-up, apply coercion rules, validate operator type compatibility, check aggregate vs non-aggregate context in SELECT/HAVING. Phase 3 - Scope analysis: subquery scoping with outer column references for correlated subqueries, detect correlation depth. Phase 4 - Constraint checking: NOT NULL columns in INSERT, CHECK constraints on constants, FK target existence. Phase 5 - View expansion: replace view refs with stored SELECT AST, re-bind. Phase 6 - Wildcard expansion: SELECT * and t.* to explicit column lists. Output BoundSelect/BoundExpr with resolved types, nullable flags, and output_schema. Include tests for column resolution, ambiguity detection, type coercion, aggregate-in-WHERE rejection, GROUP BY validation, wildcard expansion, view expansion, correlated subquery scoping.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-10",
+    "task-11"
+  ],
+  "target_files": [
+    "sqld/src/sql/binder.rs",
+    "sqld/src/sql/bound_ast.rs",
+    "sqld/tests/test_binder.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "I've explored the codebase thoroughly. This is a well-structured Rust SQL engine with a comprehensive parser and AST, type system with coercion lattice, and schema infrastructure \u2014 but no catalog system or semantic analyzer yet.\n\nFirst clarifying question:\n\n**There's no Catalog struct yet.** The binder needs to look up table/view metadata to resolve names. Should I:\n\n- **(A)** Create a `Catalog` trait that the binder takes as a parameter \u2014 allowing different catalog backends (in-memory for tests, persistent for production)?\n- **(B)** Create a concrete `Catalog` struct (in-memory `HashMap<String, TableEntry>`) that lives alongside the binder \u2014 simpler, can be made into a trait later?\n- **(C)** Have the binder accept a closure/callback for table lookups \u2014 maximum flexibility but less structured?\n\nI'd recommend **(A)** \u2014 a trait gives us testability (mock catalog in tests) while establishing the right interface for when persistent catalog storage arrives. The trait would be small: `resolve_table(name) -> Option<TableEntry>` and `resolve_view(name) -> Option<ViewEntry>`.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 0,
+  "attempt_history": [],
+  "has_diff": false
+}

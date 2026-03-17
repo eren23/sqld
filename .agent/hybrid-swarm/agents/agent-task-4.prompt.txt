@@ -1,0 +1,5 @@
+# Task: Heap file, free space map, and TOAST storage
+
+Implement heap file: table stored as sequence of pages, insert(tuple)→TID, delete(tid) sets xmax, update(tid,new)→new_TID (delete+insert), scan()→Iterator<Tuple> sequential through all pages with MVCC visibility, fetch(tid)→Tuple random access. TID is (page_id:u64, slot_index:u16). Implement free space map: 1 byte per heap page tracking free space in 32-byte granularity (0=full, 255=empty), used by INSERT to find page with room, updated on insert/delete/vacuum. Implement TOAST: values >2KB stored out-of-line in overflow pages, heap tuple stores TOAST pointer (toast_table_id, chunk_id, total_length), chunks are 2KB in a separate B+ tree keyed by (chunk_id, sequence_no). Include tests for: single/bulk insert+fetch, scan, delete, update, multi-page spanning, free space reuse after vacuum, TOAST store/retrieve for 5KB and 10KB values, inline storage at 2KB boundary.
+
+Target files: sqld/src/storage/heap_file.rs, sqld/src/storage/free_space_map.rs, sqld/src/storage/toast.rs, sqld/tests/test_heap_file.rs, sqld/tests/test_free_space_map.rs, sqld/tests/test_toast.rs

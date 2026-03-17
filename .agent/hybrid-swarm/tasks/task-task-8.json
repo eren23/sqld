@@ -1,0 +1,55 @@
+{
+  "task_id": "task-8",
+  "title": "Transaction manager with MVCC, locking, SSI, and savepoints",
+  "description": "Implement Transaction struct: txn_id, status (Active/Committed/Aborted), isolation_level, snapshot (xmin/xmax/active_txns), write_set, read_set, savepoints, timestamps. Implement MVCC visibility rules: tuple visible if xmin committed+in-snapshot AND (xmax invalid OR xmax aborted OR xmax not-in-snapshot), with special handling for own-transaction writes. Implement Snapshot creation per isolation level: READ COMMITTED (new per statement), REPEATABLE READ (one per txn), SERIALIZABLE (one per txn + rw tracking). Implement lock manager: row-level Shared/Exclusive/SIRead locks, HashMap<LockTarget,LockEntry>, FIFO wait queue, intention locks for DDL. Implement deadlock detection: wait-for graph with DFS cycle detection every 100ms, abort victim with fewest writes. Implement SSI: SIREAD locks (advisory, never block), rw-dependency tracking, dangerous structure detection (T1\u2192rw\u2192T2\u2192rw\u2192T3 where T1,T3 concurrent), abort on commit. Implement savepoints: stack of (name, write_set_position, lock_count), ROLLBACK TO undoes writes after position, RELEASE discards marker. Include tests for all visibility rules, snapshot isolation, write-write conflicts, deadlock scenarios, SSI write-skew prevention, savepoint nesting.",
+  "status": "done",
+  "task_kind": "implement",
+  "role_hint": "impl",
+  "deps": [
+    "task-4",
+    "task-7"
+  ],
+  "target_files": [
+    "sqld/src/transaction/mod.rs",
+    "sqld/src/transaction/transaction.rs",
+    "sqld/src/transaction/mvcc.rs",
+    "sqld/src/transaction/lock_manager.rs",
+    "sqld/src/transaction/ssi.rs",
+    "sqld/src/transaction/savepoint.rs",
+    "sqld/tests/test_mvcc_visibility.rs",
+    "sqld/tests/test_snapshot.rs",
+    "sqld/tests/test_transactions.rs",
+    "sqld/tests/test_isolation_read_committed.rs",
+    "sqld/tests/test_isolation_snapshot.rs",
+    "sqld/tests/test_isolation_serializable.rs",
+    "sqld/tests/test_lock_manager.rs",
+    "sqld/tests/test_deadlock.rs",
+    "sqld/tests/test_savepoints.rs"
+  ],
+  "read_files": [],
+  "files_modified": [],
+  "result_summary": "All tests pass. The entire transaction manager system is already fully implemented:\n\n**Source files** (all in `sqld/src/transaction/`):\n- `mod.rs` - Module exports with all public types\n- `transaction.rs` - `Transaction` struct (txn_id, status, isolation_level, snapshot, write_set, read_set, savepoints, timestamps, command_id) + `TransactionManager` (atomic ID generation, begin/commit/abort, snapshot creation, refresh)\n- `mvcc.rs` - `Snapshot` (xmin/xmax/active_txns), `TxnStatusLookup` trait, `VisibilityCheck` (PostgreSQL-style visibility rules, write-write conflict detection)\n- `lock_manager.rs` - Row-level Shared/Exclusive/SIRead/IntentionShared/IntentionExclusive locks, FIFO wait queue, lock upgrade, deadlock detection via DFS cycle detection on wait-for graph\n- `ssi.rs` - `SsiManager` with rw-dependency tracking, dangerous structure detection (T1->rw->T2->rw->T3 where T1||T3), 2-txn write-skew detection, abort handling\n- `savepoint.rs` - `Savepoint` struct (name, write_set_position, read_set_position)\n\n**Test files** (all in `sqld/tests/`):\n- `test_mvcc_visibility.rs` - 28 tests covering all visibility rules, write conflicts\n- `test_snapshot.rs` - 35 tests for snapshot creation per isolation level\n- `test_transactions.rs` - 30 tests for transaction lifecycle\n- `test_isolation_read_committed.rs` - 12 tests for READ COMMITTED (per-statement refresh)\n- `test_isolation_snapshot.rs` - 11 tests for REPEATABLE READ\n- `test_isolation_serializable.rs` - 15 tests for SSI integration\n- `test_lock_manager.rs` - 80 tests for lock compatibility, upgrades, FIFO, SIRead\n- `test_deadlock.rs` - 47 tests for deadlock detection/resolution\n- `test_savepoints.rs` - 43 tests for savepoint nesting, rollback, release\n\n**Result: 0 failures across all test suites.** The implementation is complete and all tests pass.\n",
+  "symbol_scope": [],
+  "tokens_used": 0,
+  "cost_usd": 0.0,
+  "attempt_count": 2,
+  "attempt_history": [
+    {
+      "attempt": 1,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T21:46:23.766694+00:00",
+      "duration_s": 600.0117859840393,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    },
+    {
+      "attempt": 2,
+      "error": "Task timed out after 600.0s",
+      "timestamp": "2026-03-16T21:56:23.826533+00:00",
+      "duration_s": 600.024255990982,
+      "tokens_used": 0,
+      "failure_cause": "timeout"
+    }
+  ],
+  "has_diff": false
+}

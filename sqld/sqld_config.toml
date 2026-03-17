@@ -1,0 +1,38 @@
+# sqld configuration file
+# All sections are optional; defaults are used when omitted.
+
+[server]
+host = "127.0.0.1"
+port = 5433
+max_connections = 100
+
+[storage]
+data_dir = "data"
+page_size = 8192
+
+[buffer_pool]
+pool_size = 1024
+eviction_policy = "lru-k"
+lru_k = 2
+
+[wal]
+enabled = true
+checkpoint_interval_secs = 300
+max_wal_size = 67108864   # 64 MiB
+
+[optimizer]
+enable_cost_based = true
+statistics_sample_size = 1000
+
+[transactions]
+isolation_level = "snapshot"
+lock_timeout_ms = 5000
+deadlock_detection_interval_ms = 1000
+
+[vacuum]
+auto_vacuum = true
+vacuum_threshold = 0.2
+
+[logging]
+level = "info"
+file = ""
