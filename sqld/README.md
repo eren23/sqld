@@ -91,7 +91,7 @@ Three bugs were found and fixed in a single debugging session: an UPDATE deadloc
 - **No-op statements** — `ANALYZE`, `VACUUM`, `ALTER TABLE` parse but do nothing
 - **No CHECK / FOREIGN KEY constraints**
 
-Full details on the [limitations page](https://eren23.github.io/sqld/known-limitations.html).
+Full details on the [limitations page](https://eren23.github.io/sqld/limitations-and-roadmap.html).
 
 ## Testing
 

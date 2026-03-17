@@ -37,6 +37,6 @@ sqld covers the full stack of a relational database:
 ## Where to Go Next
 
 - **[Getting Started](getting-started.md)** -- Build sqld, start the server, and run your first queries in under five minutes.
-- **[SQL Reference](sql-reference/index.md)** -- Complete reference for every SQL statement, expression, and data type that sqld supports.
-- **[Architecture](architecture/index.md)** -- Deep dive into the internals: parser, optimizer, executor, buffer pool, indexes, MVCC, and WAL.
+- **[SQL Reference](sql-reference/statements.md)** -- Complete reference for every SQL statement, expression, and data type that sqld supports.
+- **[Architecture](architecture/overview.md)** -- Deep dive into the internals: parser, optimizer, executor, buffer pool, indexes, MVCC, and WAL.
 - **[Configuration](configuration.md)** -- All configuration knobs explained, with defaults and examples.
